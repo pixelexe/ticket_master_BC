@@ -1,19 +1,17 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
 
-import {Script} from "forge-std/Script.sol";
-import {Counter} from "../src/Counter.sol";
+import {Script, console} from "forge-std/Script.sol";
+import {Ticket} from "../src/Ticket.sol";
 
-contract CounterScript is Script {
-    Counter public counter;
-
-    function setUp() public {}
-
-    function run() public {
+contract DeployTicket is Script {
+    function run() external returns (Ticket ticket) {
         vm.startBroadcast();
-
-        counter = new Counter();
-
+        ticket = new Ticket(
+            "Concert VIP", "VIP", 100, "ipfs://bafkreiggmlo5m5xhsdcsppgm5vpirivv4zzowznr77vjxtuoybetnaoigi", 0.01 ether
+        );
         vm.stopBroadcast();
+
+        console.log("Ticket deployed at:", address(ticket));
     }
 }

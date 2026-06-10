@@ -15,22 +15,11 @@ import "../lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/con
  * Complete the exercises marked TODO below, in order.
  */
 contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
-    /// Auto-incrementing id of the next token to mint (first token is 0).
     uint256 private _nextTokenId;
-    /// Hard cap on the number of tickets this contract can ever mint.
     uint256 public immutable maxSupply;
-    /// Price of ONE ticket, in wei.
     uint256 public price;
-    /// Metadata URI shared by every ticket of this category (looks like ipfs://…).
     string public ticketURI;
 
-    /**
-     * EXERCISE 1 — Constructor
-     *
-     * Store `maxSupply_`, `ticketURI_` and `price_` in the state variables
-     * above. (`name_` and `symbol_` are already forwarded to ERC721, and
-     * the deployer is already set as owner via Ownable.)
-     */
     constructor(
         string memory name_,
         string memory symbol_,
@@ -43,114 +32,46 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
         price = price_;
     }
 
-    /**
-     * EXERCISE 3 — Public purchase
-     *
-     * Anyone can buy `quantity` tickets by paying exactly
-     * `quantity × price` wei.
-     *  - revert with "Incorrect ETH amount" when `msg.value` is wrong;
-     *  - then delegate the minting to `_mintBatch`.
-     */
-    function buy(uint256 quantity)
-        external
-        payable
-        returns (uint256[] memory)
-    {
+    function buy(uint256 quantity) external payable returns (uint256[] memory) {
         require(msg.value == quantity * price, "Incorrect ETH amount");
-
         return _mintBatch(msg.sender, quantity);
     }
 
-    /**
-     * EXERCISE 4 — Platform mint
-     *
-     * The contract owner (the ticketing platform) can mint `quantity`
-     * tickets to any address for free — used when the buyer pays by card.
-     * Only the owner may call this (hint: a modifier from Ownable, look at
-     * how `withdraw` is restricted). Delegate the minting to `_mintBatch`.
-     */
-    function mint(address to, uint256 quantity)
-        external
-        onlyOwner
-        returns (uint256[] memory)
-    {
+    function mint(address to, uint256 quantity) external onlyOwner returns (uint256[] memory) {
         return _mintBatch(to, quantity);
     }
 
-    /**
-     * EXERCISE 2 — Batch minting (shared by `buy` and `mint`)
-     *
-     * Mint `quantity` consecutive token ids to `to` and return them.
-     *  - revert with "Quantity must be positive" when `quantity` is 0;
-     *  - revert with "Sold out" when minting would exceed `maxSupply`;
-     *  - for each token: take the next id, `_safeMint` it to `to`, and
-     *    attach the category metadata with `_setTokenURI(tokenId, ticketURI)`.
-     */
-    function _mintBatch(address to, uint256 quantity)
-        private
-        returns (uint256[] memory)
-    {
+    function _mintBatch(address to, uint256 quantity) private returns (uint256[] memory tokenIds) {
         require(quantity > 0, "Quantity must be positive");
         require(_nextTokenId + quantity <= maxSupply, "Sold out");
-        uint256[] memory mintedIds = new uint256[](quantity);
 
+        tokenIds = new uint256[](quantity);
         for (uint256 i = 0; i < quantity; i++) {
             uint256 tokenId = _nextTokenId;
-
+            _nextTokenId++;
+            tokenIds[i] = tokenId;
             _safeMint(to, tokenId);
             _setTokenURI(tokenId, ticketURI);
-
-            mintedIds[i] = tokenId;
-            _nextTokenId++;
         }
-
-        return mintedIds;
     }
 
-    /**
-     * EXERCISE 5 — Withdraw proceeds
-     *
-     * Send the full ETH balance of the contract to the owner.
-     *  - only the owner may call this;
-     *  - revert with "Withdraw failed" when the transfer fails.
-     * Hint: use a low-level `call{value: …}("") or transfer`.
-     */
-    function withdraw()
-        external
-        onlyOwner
-    {
-        (bool success, ) = payable(owner()).call{value: address(this).balance}("");
+    function withdraw() external onlyOwner {
+        (bool success,) = payable(owner()).call{value: address(this).balance}("");
         require(success, "Withdraw failed");
     }
 
-    /**
-     * EXERCISE 6 — Enumerate someone's tickets
-     *
-     * Return every token id owned by `account`.
-     * Hint: ERC721Enumerable gives you `balanceOf(account)` and
-     * `tokenOfOwnerByIndex(account, i)`.
-     */
-    function ticketsOf(address account)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function ticketsOf(address account) external view returns (uint256[] memory tokenIds) {
         uint256 balance = balanceOf(account);
-
-        uint256[] memory tokens = new uint256[](balance);
+        tokenIds = new uint256[](balance);
 
         for (uint256 i = 0; i < balance; i++) {
-            tokens[i] = tokenOfOwnerByIndex(account, i);
+            tokenIds[i] = tokenOfOwnerByIndex(account, i);
         }
-
-        return tokens;
     }
 
-    // ------------------------------------------------------------------
-    // Boilerplate — required because ERC721URIStorage and ERC721Enumerable
-    // both extend ERC721, so Solidity needs explicit overrides.
-    // Do not modify anything below this line.
-    // ------------------------------------------------------------------
+    function remainingSupply() external view returns (uint256) {
+        return maxSupply - _nextTokenId;
+    }
 
     function _update(address to, uint256 tokenId, address auth)
         internal
@@ -160,19 +81,11 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
         return super._update(to, tokenId, auth);
     }
 
-    function _increaseBalance(address account, uint128 value)
-        internal
-        override(ERC721, ERC721Enumerable)
-    {
+    function _increaseBalance(address account, uint128 value) internal override(ERC721, ERC721Enumerable) {
         super._increaseBalance(account, value);
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
+    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
 
