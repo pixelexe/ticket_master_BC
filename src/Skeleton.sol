@@ -119,7 +119,8 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
         external
         onlyOwner
     {
-        // TODO: implement
+        (bool success, ) = payable(owner()).call{value: address(this).balance}("");
+        require(success, "Withdraw failed");
     }
 
     /**
