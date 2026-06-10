@@ -83,7 +83,21 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
         private
         returns (uint256[] memory)
     {
-        // TODO: implement
+        require(quantity > 0, "Quantity must be positive");
+        require(_nextTokenId + quantity <= maxSupply, "Sold out");
+        uint256[] memory mintedIds = new uint256[](quantity);
+
+        for (uint256 i = 0; i < quantity; i++) {
+            uint256 tokenId = _nextTokenId;
+
+            _safeMint(to, tokenId);
+            _setTokenURI(tokenId, ticketURI);
+
+            mintedIds[i] = tokenId;
+            _nextTokenId++;
+        }
+
+        return mintedIds;
     }
 
     /**
