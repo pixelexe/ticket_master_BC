@@ -52,6 +52,8 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
      *  - then delegate the minting to `_mintBatch`.
      */
     function buy(uint256 quantity) external payable returns (uint256[] memory) {
+        require(msg.value == quantity * price, "Incorrect ETH amount");
+        return _mintBatch(msg.sender, quantity);
         // TODO: implement
     }
 
