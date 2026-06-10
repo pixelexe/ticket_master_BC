@@ -135,7 +135,15 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
         view
         returns (uint256[] memory)
     {
-        // TODO: implement
+        uint256 balance = balanceOf(account);
+
+        uint256[] memory tokens = new uint256[](balance);
+
+        for (uint256 i = 0; i < balance; i++) {
+            tokens[i] = tokenOfOwnerByIndex(account, i);
+        }
+
+        return tokens;
     }
 
     // ------------------------------------------------------------------
