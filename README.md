@@ -1,85 +1,84 @@
 # NFT Ticketing
 
-Application de billetterie NFT réalisée pour le cours Blockchain.
+An NFT-based ticketing platform build for the IT4-Blockchain class 2026. 
+Nour El Houda HACHEMI, Livia LEROY-STONE, Sara SERHAL, Raymond ZHENG
 
-## Fonctionnalités
+## How to use
 
-- création et consultation d'événements ;
-- une catégorie de billets par contrat ERC-721 conforme à `Skeleton.sol` ;
-- image et métadonnées stockées sur IPFS avec Pinata ;
-- achat direct en SepoliaETH avec MetaMask ;
-- faux paiement par carte, suivi d'un mint par l'API ;
-- affichage des NFT possédés ;
-- retrait des fonds par le vendeur.
+When acessing the platform, the user can : 
+1) Connect his/her MetaMask account ("Connect MetaMask" button at top right)
+2) Create an event (with title, description and date, then "Create event" button)
+3) Create one or more categories for that event (with title, description, price in wei, maximum supply and image, then 
+button "Upload to IPFS and deploy category")
+4) That event and category are now automatically selected, but the user can select others with the dropdown menus at 
+the top of the page (if others have been created))
+5) For the selected event and category, the user can buy tickets with metamask (Pay with wallet --> Buy with MetaMask) 
+or by card (Card Payment --> Fake card number --> Simulate card payment)
+6) When bought (and validated if bought with MetaMask), the number of tickets available diminishes by 1, the ticket 
+bought becomes available (and is visualisable on Etherscan) and the contract revenue goes up (by the price of one ticket)
+7) The user can withdraw the amount collected with ticket sales (at the bottom of the page, "Contract revenue" part, 
+by "Withdraw funds") into their MetaMask account.
 
 ## Architecture
 
-- `contracts/` : contrats Solidity, tests et scripts Foundry ;
-- `api/` : FastAPI en trois couches (`presentation`, `domain`, `infrastructure`) ;
-- `frontend/` : React, Vite et Ethers.js ;
-- SQLite pour les événements et catégories.
+- `contracts/` : contracts, scripts and unit tests
+- `api/` : API (FastAPI) (3-tier : presentation, domain, infrastructure)
+- `frontend/` : React, Vite et Ethers.js
+- `database` : SQLite
 
-## Lancement
+## Necessary installs 
 
-API :
+ - Python 3.11 or higher
+ - Node.js 24.16 or higher 
+ - npm
+ - Foundry
+ - MetaMask (with Sepolia ETH)
+ - MetaMask configurÃ© sur Sepolia
+ - Pinata account and JWT with necessary permissions
 
+## How to run
+
+#### Specify .env file : 
+
+Create .env file from example : 
+```bash
+cd contracts
+cp .env.example .env
+```
+
+Fill in SEPOLIA_RPC_URL, SELLER_ADDRESS, PRIVATE_KEY and PINATA_JWT as specified. 
+
+Leave TICKET_NFT_ADDRESS empty : the contracts are created from the user interface when the categories are added.
+
+
+#### Run API 
+
+Execute following code in a terminal :
 ```bash
 cd api
+python3 -m venv .venv
 source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
 uvicorn app.main:app --reload
 ```
 
-Frontend :
+#### Run Frontend 
 
+Execute following code in another terminal :
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Swagger : http://127.0.0.1:8000/docs
-
-Frontend : http://127.0.0.1:5173
+Then go to Localhost adress given : http://127.0.0.1:5173
 
 ## Tests
+
+To run tests, execute following code : 
 
 ```bash
 cd contracts && forge test
 cd ../api && .venv/bin/python -m pytest
 cd ../frontend && npm run lint && npm run build
 ```
-
-## Configuration
-
-Créer le fichier local de configuration à partir du modèle :
-
-```bash
-cd contracts
-cp .env.example .env
-```
-
-Compléter ensuite `contracts/.env` :
-
-```env
-SEPOLIA_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com/
-SELLER_ADDRESS=0xAdressePubliqueMetaMaskDuVendeur
-TICKET_NFT_ADDRESS=0xAdresseDuContratDejaDeploye
-PRIVATE_KEY=clePriveeDuWalletVendeur
-PINATA_JWT=jwtPinata
-```
-
-Ce fichier est l'unique fichier `.env` du projet. L'API y lit les secrets et
-fournit uniquement l'adresse publique du vendeur au frontend. Il ne faut donc
-modifier aucune adresse dans `frontend/src/App.jsx`.
-
-- `SEPOLIA_RPC_URL` : URL permettant à Forge et Web3.py d'accéder à Sepolia ;
-- `SELLER_ADDRESS` : adresse publique MetaMask du vendeur ;
-- `TICKET_NFT_ADDRESS` : contrat principal déjà déployé, peut rester vide avant le premier déploiement ;
-- `PRIVATE_KEY` : clé du compte vendeur, utilisée par Forge et l'API pour signer ;
-- `PINATA_JWT` : JWT créé dans Pinata, avec les droits d'upload de fichiers et JSON.
-
-Le fichier `.env` est exclu de Git. Ne jamais publier la clé privée, le JWT Pinata ou envoyer une capture de ce fichier. Utiliser un wallet de développement dédié au testnet.
-
-## Contrat Sepolia
-
-L'adresse dépend du dernier contrat créé depuis l'interface Admin.
