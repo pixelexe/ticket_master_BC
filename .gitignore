@@ -15,6 +15,5 @@ out/
 docs/
 
 # Dotenv file
-.env
 .env.*
 !.env.example
