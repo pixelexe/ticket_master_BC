@@ -1,0 +1,9 @@
+# Foundry
+cache/
+out/
+broadcast/
+
+# Secrets
+.env
+.env.*
+!.env.example

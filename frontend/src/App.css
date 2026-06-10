@@ -1,0 +1,345 @@
+.header {
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #d8d8d8;
+  display: grid;
+  gap: 32px;
+  grid-template-columns: auto 1fr auto;
+  padding: 18px max(24px, calc((100% - 980px) / 2));
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  align-items: center;
+  color: #101010;
+  display: flex;
+  font-size: 18px;
+  font-weight: 800;
+  gap: 9px;
+  text-decoration: none;
+}
+
+.brand-icon {
+  align-items: center;
+  background: #f0a3ad;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 12px;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+nav {
+  display: flex;
+  gap: 24px;
+}
+
+nav a {
+  color: #5d5d65;
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.wallet-button {
+  align-items: flex-end;
+  background: #fff;
+  border: 2px solid #111;
+  color: #111;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-weight: 750;
+  padding: 10px 16px;
+}
+
+.wallet-button small {
+  color: #686870;
+  font-size: 11px;
+  font-weight: 650;
+  margin-top: 2px;
+}
+
+.global-status {
+  background: #fff1f1;
+  border-bottom: 1px solid #efcaca;
+  color: #8b1c1c;
+  margin: 0;
+  padding: 12px 24px;
+  text-align: center;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 920px;
+  padding: 36px 24px 80px;
+}
+
+.selector-card {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dedede;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr auto 1fr;
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.selector-card label,
+.admin-form label {
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.selector-card select,
+.admin-form input,
+.admin-form textarea {
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  color: #111;
+  font: inherit;
+  padding: 12px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 34px;
+}
+
+.admin-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.event-image {
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
+  width: 100%;
+}
+
+.event {
+  margin-bottom: 28px;
+}
+
+.event h1 {
+  color: #111;
+  font-size: clamp(32px, 6vw, 54px);
+  letter-spacing: -0.04em;
+  margin: 6px 0;
+}
+
+.event-description,
+.ticket-details,
+.owned-card p {
+  color: #686870;
+}
+
+.eyebrow {
+  color: #797982;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin: 18px 0 0;
+  text-transform: uppercase;
+}
+
+.ticket-card,
+.owned-card,
+.admin-card {
+  background: #fff;
+  border: 1px solid #dedede;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 6%);
+  margin-top: 24px;
+  padding: 28px;
+}
+
+.ticket-heading {
+  align-items: flex-start;
+  border-bottom: 1px dashed #cfcfcf;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 22px;
+}
+
+.ticket-heading h2,
+.owned-card h2,
+.admin-card h2 {
+  color: #111;
+  font-size: 28px;
+  margin: 4px 0;
+}
+
+.ticket-heading strong {
+  color: #111;
+  font-size: 25px;
+}
+
+.ticket-details {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.primary-button {
+  background: #111;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 15px 20px;
+  width: 100%;
+}
+
+.primary-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.payment-tabs {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 12px;
+}
+
+.payment-tabs button {
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  color: #555;
+  cursor: pointer;
+  font-weight: 750;
+  padding: 13px;
+}
+
+.payment-tabs button.active {
+  border: 2px solid #111;
+  color: #111;
+}
+
+.card-form {
+  display: grid;
+  gap: 10px;
+}
+
+.card-form label {
+  color: #444;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.card-form input {
+  border: 1px solid #cfcfcf;
+  font-size: 16px;
+  padding: 13px;
+}
+
+.status,
+.notice {
+  background: #f3f3f3;
+  color: #333;
+  margin: 16px 0 0;
+  padding: 12px;
+}
+
+.owned-card a {
+  color: #111;
+  font-weight: 700;
+}
+
+.admin-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.admin-heading p {
+  color: #686870;
+}
+
+.admin-heading strong {
+  color: #111;
+  font-size: 26px;
+}
+
+.ticket-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.owned-ticket {
+  align-items: center;
+  border-top: 1px solid #e5e5e5;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 120px 1fr;
+  padding-top: 16px;
+}
+
+.owned-ticket img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  width: 120px;
+}
+
+.owned-ticket .eyebrow {
+  margin-top: 0;
+}
+
+.owned-ticket h3 {
+  color: #111;
+  font-size: 22px;
+  margin: 5px 0;
+}
+
+.owned-ticket a {
+  display: inline-block;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+@media (max-width: 650px) {
+  .header {
+    gap: 14px;
+    grid-template-columns: 1fr auto;
+  }
+
+  nav {
+    display: none;
+  }
+
+  .wallet-button {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+
+  .ticket-details {
+    display: block;
+  }
+
+  .selector-card {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-heading {
+    align-items: flex-start;
+    display: block;
+  }
+
+  .owned-ticket {
+    align-items: start;
+    grid-template-columns: 82px 1fr;
+  }
+
+  .owned-ticket img {
+    width: 82px;
+  }
+}
