@@ -51,10 +51,14 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
      *  - revert with "Incorrect ETH amount" when `msg.value` is wrong;
      *  - then delegate the minting to `_mintBatch`.
      */
-    function buy(uint256 quantity) external payable returns (uint256[] memory) {
+    function buy(uint256 quantity)
+        external
+        payable
+        returns (uint256[] memory)
+    {
         require(msg.value == quantity * price, "Incorrect ETH amount");
+
         return _mintBatch(msg.sender, quantity);
-        // TODO: implement
     }
 
     /**
@@ -67,9 +71,10 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
      */
     function mint(address to, uint256 quantity)
         external
+        onlyOwner
         returns (uint256[] memory)
     {
-        // TODO: implement (and add the missing modifier to the signature)
+        return _mintBatch(to, quantity);
     }
 
     /**
