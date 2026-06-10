@@ -38,7 +38,9 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
         string memory ticketURI_,
         uint256 price_
     ) ERC721(name_, symbol_) Ownable(msg.sender) {
-        // TODO: implement
+        maxSupply = maxSupply_;
+        ticketURI = ticketURI_;
+        price = price_;
     }
 
     /**
