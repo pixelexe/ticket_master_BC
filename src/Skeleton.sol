@@ -115,8 +115,12 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
      *  - revert with "Withdraw failed" when the transfer fails.
      * Hint: use a low-level `call{value: …}("") or transfer`.
      */
-    function withdraw() external onlyOwner {
-        // TODO: implement
+    function withdraw()
+        external
+        onlyOwner
+    {
+        (bool success, ) = payable(owner()).call{value: address(this).balance}("");
+        require(success, "Withdraw failed");
     }
 
     /**
@@ -126,8 +130,20 @@ contract Ticket is ERC721URIStorage, ERC721Enumerable, Ownable {
      * Hint: ERC721Enumerable gives you `balanceOf(account)` and
      * `tokenOfOwnerByIndex(account, i)`.
      */
-    function ticketsOf(address account) external view returns (uint256[] memory) {
-        // TODO: implement
+    function ticketsOf(address account)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        uint256 balance = balanceOf(account);
+
+        uint256[] memory tokens = new uint256[](balance);
+
+        for (uint256 i = 0; i < balance; i++) {
+            tokens[i] = tokenOfOwnerByIndex(account, i);
+        }
+
+        return tokens;
     }
 
     // ------------------------------------------------------------------
